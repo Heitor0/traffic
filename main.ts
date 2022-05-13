@@ -1,8 +1,11 @@
 radio.onReceivedNumber(function (receivedNumber) {
-    if (receivedNumber == "5") {
+    if (receivedNumber == 5) {
         red()
-    } else if (receivedNumber == "") {
+    } else if (receivedNumber == 6) {
         green()
+        basic.pause(100)
+        basic.showIcon(IconNames.Yes)
+        basic.showIcon(IconNames.No)
     }
 })
 function green () {
@@ -14,13 +17,21 @@ function green () {
     range.showColor(neopixel.colors(NeoPixelColors.Green))
     for (let index = 0; index < 10; index++) {
         basic.showNumber(count)
-        count += 1
+        count += -1
+    }
+    if (pedestrian == true || false) {
+        red()
+        basic.pause(2000)
+        amber()
+        basic.pause(2000)
+        green()
+        basic.pause(2000)
+    } else {
+    	
     }
 }
 input.onButtonPressed(Button.A, function () {
-    if ("" == "") {
-        radio.sendNumber(5)
-    }
+    pedestrian = true
 })
 function traffic () {
     basic.pause(5000)
@@ -41,6 +52,9 @@ function amber () {
 input.onButtonPressed(Button.AB, function () {
 	
 })
+input.onButtonPressed(Button.B, function () {
+    radio.sendNumber(6)
+})
 function red () {
     range = strip.range(0, 1)
     range.showColor(neopixel.colors(NeoPixelColors.Red))
@@ -52,6 +66,7 @@ function red () {
 let distance = 0
 let count = 0
 let range: neopixel.Strip = null
+let pedestrian = false
 let strip: neopixel.Strip = null
 basic.showLeds(`
     # # . # #
@@ -64,7 +79,7 @@ radio.setGroup(5)
 // Put this to P16 when testing.
 strip = neopixel.create(DigitalPin.P0, 4, NeoPixelMode.RGB)
 strip.setBrightness(255)
-let pedestrian = 0
+pedestrian = true
 basic.forever(function () {
     pins.digitalWritePin(DigitalPin.P1, 0)
     control.waitMicros(2)
